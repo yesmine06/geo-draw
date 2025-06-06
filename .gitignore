@@ -1,0 +1,38 @@
+# Fichiers compil‚s 
+*.class 
+*.jar 
+*.war 
+*.ear 
+ 
+# Dossiers de build 
+target/ 
+build/ 
+out/ 
+bin/ 
+ 
+# Fichiers IDE 
+.idea/ 
+*.iml 
+.vscode/ 
+.settings/ 
+.classpath 
+.project 
+ 
+# Fichiers systŠme 
+.DS_Store 
+Thumbs.db 
+ 
+# Fichiers de logs 
+*.log 
+ 
+# Fichiers de configuration locaux 
+application.properties 
+application.yml 
+ 
+# Fichiers de base de donn‚es 
+*.db 
+*.sqlite 
+ 
+# Fichiers temporaires 
+*.tmp 
+*.temp 
