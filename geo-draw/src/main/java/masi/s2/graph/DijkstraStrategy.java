@@ -7,6 +7,7 @@ public class DijkstraStrategy implements ShortestPathStrategy {
     public List<Node> findShortestPath(Graph graph, Node start, Node end) {
         Map<Node, Double> distances = new HashMap<>();
         Map<Node, Node> previousNodes = new HashMap<>();
+        Set<Node> visited = new HashSet<>();
         PriorityQueue<Node> queue = new PriorityQueue<>(
             Comparator.comparingDouble(distances::get)
         );
@@ -20,6 +21,10 @@ public class DijkstraStrategy implements ShortestPathStrategy {
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
+            
+            // Si on a déjà visité ce nœud, on passe au suivant
+            if (visited.contains(current)) continue;
+            visited.add(current);
 
             if (current == end) {
                 break;
@@ -27,6 +32,8 @@ public class DijkstraStrategy implements ShortestPathStrategy {
 
             for (Map.Entry<Node, Double> neighbor : current.getNeighbors().entrySet()) {
                 Node next = neighbor.getKey();
+                if (visited.contains(next)) continue;
+                
                 double weight = neighbor.getValue();
                 double newDistance = distances.get(current) + weight;
 

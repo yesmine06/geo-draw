@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Node {
     public static final double NODE_RADIUS = 20;
@@ -128,5 +129,18 @@ public class Node {
 
     public boolean isInPath() {
         return isInPath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return id.equals(node.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 } 

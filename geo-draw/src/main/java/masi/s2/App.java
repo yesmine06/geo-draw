@@ -80,6 +80,7 @@ public class App extends Application {
     private int nodeCounter = 1;
     private LoggingManager loggingManager;
     private ComboBox<String> loggingStrategySelector;
+    private ComboBox<String> algorithmSelector;
     private VBox controls;
     private Button findPathButton;
     private Button addEdgeButton;
@@ -398,6 +399,32 @@ public class App extends Application {
         modeIndicator = new Label("Mode: Dessin");
         modeIndicator.setStyle("-fx-font-weight: bold; -fx-background-color: rgba(255,255,255,0.8); -fx-padding: 3px;");
         
+        // Ajout du sélecteur d'algorithme
+        algorithmSelector = new ComboBox<>(
+            FXCollections.observableArrayList("Dijkstra", "A*", "Floyd-Warshall")
+        );
+        algorithmSelector.setValue("Dijkstra");
+        algorithmSelector.setMinWidth(120);
+        algorithmSelector.setPrefWidth(120);
+        algorithmSelector.setStyle(LIGHT_COMBO_BOX_STYLE);
+        
+        // Gestionnaire pour le sélecteur d'algorithme
+        algorithmSelector.setOnAction(e -> {
+            String selectedAlgorithm = algorithmSelector.getValue();
+            switch (selectedAlgorithm) {
+                case "Dijkstra":
+                    pathStrategy = new DijkstraStrategy();
+                    break;
+                case "A*":
+                    pathStrategy = new AStarStrategy();
+                    break;
+                case "Floyd-Warshall":
+                    pathStrategy = new FloydWarshallStrategy();
+                    break;
+            }
+            updateStatus("Algorithme sélectionné : " + selectedAlgorithm);
+        });
+        
         // Style des labels avec une taille de police plus petite
         String labelStyle = isDarkTheme ? 
             """
@@ -510,7 +537,7 @@ public class App extends Application {
         findPathButton.setStyle(GREEN_BUTTON_STYLE);
         addEdgeButton = new Button("➕ Ajouter une arête");
         addEdgeButton.setStyle(BLUE_BUTTON_STYLE);
-        graphControls = new VBox(8, addEdgeButton, findPathButton);
+        graphControls = new VBox(8, addEdgeButton, findPathButton, new Label("Algorithme :"), algorithmSelector);
         graphControls.setAlignment(Pos.CENTER);
         graphControls.setVisible(false);
         controls.getChildren().add(graphControls);

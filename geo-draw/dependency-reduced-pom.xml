@@ -23,7 +23,12 @@
           <options>
             <option>--add-opens</option>
             <option>java.base/java.lang=ALL-UNNAMED</option>
+            <option>--add-modules</option>
+            <option>javafx.controls,javafx.fxml,javafx.swing</option>
           </options>
+          <launcher>app</launcher>
+          <jlinkImageName>app</jlinkImageName>
+          <jlinkZipName>app-zip</jlinkZipName>
         </configuration>
       </plugin>
       <plugin>
