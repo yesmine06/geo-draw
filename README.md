@@ -1,3 +1,3 @@
 # Geo-Draw 
  
-Une application de dessin vectoriel d‚velopp‚e en Java avec JavaFX, offrant des fonctionnalit‚s avanc‚es de dessin et de manipulation de graphes. 
+Une application de dessin vectoriel dÃ©veloppÃ©e en Java avec JavaFX, offrant des fonctionnalitÃ©s avancÃ©es de dessin et de manipulation de graphes. 
