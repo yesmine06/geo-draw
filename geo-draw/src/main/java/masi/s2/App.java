@@ -12,8 +12,6 @@ import javafx.stage.FileChooser;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.transform.Rotate;
@@ -87,227 +85,8 @@ public class App extends Application {
     private Button viewLogsButton;
     private Label modeIndicator;
     private VBox graphControls;
-
-    // Thème clair moderne et très contrasté
-    private static final String LIGHT_THEME = """
-        -fx-background-color: #f5f6fa;
-        -fx-text-fill: #222;
-    """;
-    // Thème sombre moderne et très contrasté
-    private static final String DARK_THEME = """
-        -fx-background-color: #23272e;
-        -fx-text-fill: #fff;
-    """;
-    // Style des boutons - thème sombre
-    private static final String DARK_BUTTON_STYLE = """
-        -fx-font-size: 16px;
-        -fx-text-fill: #fff;
-        -fx-background-color: #3b4252;
-        -fx-padding: 12px 20px;
-        -fx-background-radius: 8px;
-        -fx-cursor: hand;
-        -fx-font-weight: bold;
-    """;
-    // Style des boutons - thème clair
-    private static final String LIGHT_BUTTON_STYLE = """
-        -fx-font-size: 16px;
-        -fx-text-fill: #23272e;
-        -fx-background-color: #e1e5ee;
-        -fx-padding: 12px 20px;
-        -fx-background-radius: 8px;
-        -fx-cursor: hand;
-        -fx-font-weight: bold;
-    """;
-    // Style des labels - thème sombre
-    private static final String DARK_LABEL_STYLE = """
-        -fx-text-fill: #fff;
-        -fx-font-size: 16px;
-        -fx-font-weight: bold;
-        -fx-padding: 5px 0;
-    """;
-    // Style des labels - thème clair
-    private static final String LIGHT_LABEL_STYLE = """
-        -fx-text-fill: #222;
-        -fx-font-size: 16px;
-        -fx-font-weight: bold;
-        -fx-padding: 5px 0;
-    """;
-    // Style de la barre d'état - thème sombre
-    private static final String DARK_STATUS_STYLE = """
-        -fx-text-fill: #fff;
-        -fx-font-size: 15px;
-        -fx-font-weight: bold;
-        -fx-background-color: #3b4252;
-        -fx-padding: 10px;
-        -fx-background-radius: 5px;
-    """;
-    // Style de la barre d'état - thème clair
-    private static final String LIGHT_STATUS_STYLE = """
-        -fx-text-fill: #23272e;
-        -fx-font-size: 15px;
-        -fx-font-weight: bold;
-        -fx-background-color: #e1e5ee;
-        -fx-padding: 10px;
-        -fx-background-radius: 5px;
-        -fx-border-color: #bcc0cc;
-        -fx-border-width: 1px;
-        -fx-border-radius: 5px;
-    """;
-    // Style des ComboBox - thème sombre
-    private static final String DARK_COMBO_BOX_STYLE = """
-        -fx-background-color: #444857;
-        -fx-text-fill: #fff;
-        -fx-prompt-text-fill: #fff;
-        -fx-padding: 8px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-min-width: 180px;
-        -fx-pref-width: 180px;
-        -fx-border-color: #888;
-        -fx-border-width: 1px;
-        -fx-border-radius: 8px;
-    """;
-    // Style des ComboBox - thème clair
-    private static final String LIGHT_COMBO_BOX_STYLE = """
-        -fx-background-color: #fff;
-        -fx-text-fill: #222;
-        -fx-padding: 8px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-min-width: 180px;
-        -fx-pref-width: 180px;
-        -fx-border-color: #b9bbbe;
-        -fx-border-width: 2px;
-        -fx-border-radius: 8px;
-    """;
-    // Style des CheckBox - thème sombre
-    private static final String DARK_CHECK_BOX_STYLE = """
-        -fx-text-fill: #fff;
-        -fx-font-size: 15px;
-        -fx-background-color: transparent;
-        -fx-padding: 5px 0;
-    """;
-    // Style des CheckBox - thème clair
-    private static final String LIGHT_CHECK_BOX_STYLE = """
-        -fx-text-fill: #23272e;
-        -fx-font-size: 15px;
-        -fx-background-color: transparent;
-        -fx-padding: 5px 0;
-    """;
-    // Style des ToggleButton - thème sombre
-    private static final String DARK_TOGGLE_BUTTON_STYLE = """
-        -fx-background-color: #3b4252;
-        -fx-text-fill: #fff;
-        -fx-padding: 8px 16px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-font-weight: bold;
-    """;
-    // Style des ToggleButton - thème clair
-    private static final String LIGHT_TOGGLE_BUTTON_STYLE = """
-        -fx-background-color: #fff;
-        -fx-text-fill: #23272e;
-        -fx-padding: 8px 16px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-font-weight: bold;
-        -fx-border-color: #bcc0cc;
-        -fx-border-width: 1px;
-        -fx-border-radius: 8px;
-    """;
-    // Style de la barre d'outils - thème sombre
-    private static final String DARK_TOOLBAR_STYLE = """
-        -fx-background-color: #313244;
-        -fx-padding: 12px;
-        -fx-spacing: 12px;
-        -fx-background-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 3);
-    """;
-    // Style de la barre d'outils - thème clair
-    private static final String LIGHT_TOOLBAR_STYLE = """
-        -fx-background-color: #dce0e8;
-        -fx-padding: 12px;
-        -fx-spacing: 12px;
-        -fx-background-radius: 10px;
-        -fx-border-color: #bcc0cc;
-        -fx-border-width: 1px;
-        -fx-border-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
-    """;
-    // Style du panneau de contrôle - thème sombre
-    private static final String DARK_CONTROL_PANEL_STYLE = """
-        -fx-background-color: #313244;
-        -fx-padding: 18px;
-        -fx-spacing: 15px;
-        -fx-background-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 3);
-    """;
-    // Style du panneau de contrôle - thème clair
-    private static final String LIGHT_CONTROL_PANEL_STYLE = """
-        -fx-background-color: #dce0e8;
-        -fx-padding: 18px;
-        -fx-spacing: 15px;
-        -fx-background-radius: 10px;
-        -fx-border-color: #bcc0cc;
-        -fx-border-width: 1px;
-        -fx-border-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
-    """;
-    // Style des Sliders - thème sombre
-    private static final String DARK_SLIDER_STYLE = """
-        -fx-control-inner-background: #45475a;
-        -fx-background-color: #313244;
-        -fx-background-radius: 8px;
-    """;
-    // Style des Sliders - thème clair
-    private static final String LIGHT_SLIDER_STYLE = """
-        -fx-control-inner-background: #ffffff;
-        -fx-background-color: #dce0e8;
-        -fx-background-radius: 8px;
-    """;
-    // Style du Canvas - thème sombre
-    private static final String DARK_CANVAS_STYLE = """
-        -fx-background-color: white;
-        -fx-border-color: #45475a;
-        -fx-border-width: 2px;
-        -fx-border-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);
-    """;
-    // Style du Canvas - thème clair
-    private static final String LIGHT_CANVAS_STYLE = """
-        -fx-background-color: white;
-        -fx-border-color: #bcc0cc;
-        -fx-border-width: 2px;
-        -fx-border-radius: 10px;
-        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 3);
-    """;
-    // Style du ColorPicker - thème sombre
-    private static final String DARK_COLOR_PICKER_STYLE = """
-        -fx-background-color: #444857;
-        -fx-text-fill: #fff;
-        -fx-prompt-text-fill: #fff;
-        -fx-padding: 8px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-min-width: 180px;
-        -fx-pref-width: 180px;
-        -fx-border-color: #888;
-        -fx-border-width: 1px;
-        -fx-border-radius: 8px;
-    """;
-    // Style du ColorPicker - thème clair
-    private static final String LIGHT_COLOR_PICKER_STYLE = """
-        -fx-background-color: #fff;
-        -fx-text-fill: #222;
-        -fx-padding: 8px;
-        -fx-background-radius: 8px;
-        -fx-font-size: 15px;
-        -fx-min-width: 180px;
-        -fx-pref-width: 180px;
-        -fx-border-color: #b9bbbe;
-        -fx-border-width: 2px;
-        -fx-border-radius: 8px;
-    """;
+    private ComboBox<String> shapeSelector;
+    private ColorPicker colorPicker;
 
     // Variables pour le thème actuel
     private boolean isDarkTheme = true;
@@ -326,6 +105,110 @@ public class App extends Application {
     private Node selectedNode1 = null;
     private Node selectedNode2 = null;
 
+    // Styles sophistiqués avec glassmorphisme et effets modernes
+    private static final String GLASS_EFFECT_DARK = """
+        -fx-background-color: rgba(36, 40, 59, 0.85);
+        -fx-background-radius: 16px;
+        -fx-border-color: rgba(65, 72, 104, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 16px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    """;
+
+    private static final String GLASS_EFFECT_LIGHT = """
+        -fx-background-color: rgba(233, 236, 239, 0.85);
+        -fx-background-radius: 16px;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 16px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    """;
+
+    // Styles des labels
+    private static final String LIGHT_LABEL_STYLE = """
+        -fx-text-fill: #212529;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 5px 0;
+    """;
+
+    private static final String DARK_LABEL_STYLE = """
+        -fx-text-fill: #FFFFFF;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 5px 0;
+    """;
+
+    // Styles du ColorPicker
+    private static final String LIGHT_COLOR_PICKER_STYLE = """
+        -fx-background-color: rgba(255, 255, 255, 0.85);
+        -fx-text-fill: #212529;
+        -fx-padding: 8px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 2px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    private static final String DARK_COLOR_PICKER_STYLE = """
+        -fx-background-color: #24283B;
+        -fx-text-fill: #FFFFFF;
+        -fx-prompt-text-fill: #FFFFFF;
+        -fx-text-base-color: #FFFFFF;
+        -fx-padding: 8px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+        -fx-border-color: rgba(65, 72, 104, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    """;
+
+    // Styles des CheckBox
+    private static final String LIGHT_CHECK_BOX_STYLE = """
+        -fx-text-fill: #212529;
+        -fx-font-size: 15px;
+        -fx-background-color: transparent;
+        -fx-padding: 5px 0;
+    """;
+
+    private static final String DARK_CHECK_BOX_STYLE = """
+        -fx-text-fill: #a9b1d6;
+        -fx-font-size: 15px;
+        -fx-background-color: transparent;
+        -fx-padding: 5px 0;
+    """;
+
+    // Styles de la barre d'état
+    private static final String LIGHT_STATUS_STYLE = """
+        -fx-text-fill: #0d6efd;
+        -fx-font-size: 15px;
+        -fx-font-weight: bold;
+        -fx-background-color: rgba(233, 236, 239, 0.85);
+        -fx-padding: 10px;
+        -fx-background-radius: 12px;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    private static final String DARK_STATUS_STYLE = """
+        -fx-text-fill: #7aa2f7;
+        -fx-font-size: 15px;
+        -fx-font-weight: bold;
+        -fx-background-color: rgba(36, 40, 59, 0.85);
+        -fx-padding: 10px;
+        -fx-background-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    """;
+
     // Styles boutons colorés et très contrastés (texte noir sur fond clair)
     private static final String GREEN_BUTTON_STYLE = "-fx-background-color: #43b581; -fx-text-fill: #222; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-border-color: #23272a; -fx-border-width: 2px;";
     private static final String BLUE_BUTTON_STYLE = "-fx-background-color: #5865f2; -fx-text-fill: #fff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-border-color: #23272a; -fx-border-width: 2px;";
@@ -341,6 +224,193 @@ public class App extends Application {
     private static final String MODERN_COMBOBOX_DARK = "-fx-background-color: rgba(40,44,52,0.85);-fx-text-fill: #fff;-fx-font-size: 16px;-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;-fx-background-radius: 12px;-fx-border-color: #5865f2;-fx-border-width: 2px;-fx-border-radius: 12px;";
     private static final String MODERN_LABEL_LIGHT = "-fx-text-fill: #23272a;-fx-font-size: 17px;-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;-fx-font-weight: bold;-fx-padding: 7px 0;";
     private static final String MODERN_LABEL_DARK = "-fx-text-fill: #fff;-fx-font-size: 17px;-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;-fx-font-weight: bold;-fx-padding: 7px 0;";
+
+    // Styles des boutons avec dégradés
+    private static final String GRADIENT_BUTTON_DARK = """
+        -fx-background-color: linear-gradient(to right, #24283b, #414868);
+        -fx-text-fill: #a9b1d6;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    """;
+
+    private static final String GRADIENT_BUTTON_LIGHT = """
+        -fx-background-color: linear-gradient(to right, #e9ecef, #dee2e6);
+        -fx-text-fill: #212529;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    private static final String ACCENT_BUTTON_DARK = """
+        -fx-background-color: linear-gradient(to right, #7aa2f7, #bb9af7);
+        -fx-text-fill: #1a1b26;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    """;
+
+    private static final String ACCENT_BUTTON_LIGHT = """
+        -fx-background-color: linear-gradient(to right, #0d6efd, #6f42c1);
+        -fx-text-fill: #ffffff;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    // Styles du Canvas
+    private static final String DARK_CANVAS_STYLE = """
+        -fx-background-color: white;
+        -fx-border-color: rgba(65, 72, 104, 0.5);
+        -fx-border-width: 2px;
+        -fx-border-radius: 16px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    """;
+
+    private static final String LIGHT_CANVAS_STYLE = """
+        -fx-background-color: white;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 2px;
+        -fx-border-radius: 16px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 4);
+    """;
+
+    // Styles des ComboBox
+    private static final String DARK_COMBO_BOX_STYLE = """
+        -fx-background-color: #24283B;
+        -fx-text-fill: #FFFFFF;
+        -fx-prompt-text-fill: #FFFFFF;
+        -fx-text-base-color: #FFFFFF;
+        -fx-mark-color: #FFFFFF;
+        -fx-padding: 8px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+        -fx-border-color: rgba(65, 72, 104, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+        -fx-cell-background-color: #24283B;
+        -fx-cell-text-fill: #FFFFFF;
+        -fx-popup-background-color: #24283B;
+        -fx-background: #24283B;
+        -fx-control-inner-background: #24283B;
+    """;
+
+    private static final String LIGHT_COMBO_BOX_STYLE = """
+        -fx-background-color: rgba(255, 255, 255, 0.85);
+        -fx-text-fill: #212529;
+        -fx-padding: 8px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 2px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    // Styles des thèmes
+    private static final String DARK_THEME = """
+        -fx-background-color: linear-gradient(to bottom right, #1a1b26, #24283b);
+        -fx-text-fill: #FFFFFF;
+    """;
+
+    private static final String LIGHT_THEME = """
+        -fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+        -fx-text-fill: #212529;
+    """;
+
+    // Styles des panneaux
+    private static final String DARK_TOOLBAR_STYLE = GLASS_EFFECT_DARK;
+    private static final String LIGHT_TOOLBAR_STYLE = GLASS_EFFECT_LIGHT;
+    private static final String DARK_CONTROL_PANEL_STYLE = GLASS_EFFECT_DARK;
+    private static final String LIGHT_CONTROL_PANEL_STYLE = GLASS_EFFECT_LIGHT;
+
+    // Styles des boutons toggle
+    private static final String DARK_TOGGLE_BUTTON_STYLE = """
+        -fx-background-color: rgba(36, 40, 59, 0.85);
+        -fx-text-fill: #a9b1d6;
+        -fx-padding: 8px 16px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-font-weight: bold;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+    """;
+
+    private static final String LIGHT_TOGGLE_BUTTON_STYLE = """
+        -fx-background-color: rgba(255, 255, 255, 0.85);
+        -fx-text-fill: #212529;
+        -fx-padding: 8px 16px;
+        -fx-background-radius: 12px;
+        -fx-font-size: 15px;
+        -fx-font-weight: bold;
+        -fx-border-color: rgba(222, 226, 230, 0.5);
+        -fx-border-width: 1px;
+        -fx-border-radius: 12px;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    """;
+
+    // Styles des sliders
+    private static final String DARK_SLIDER_STYLE = """
+        -fx-control-inner-background: #414868;
+        -fx-background-color: #24283b;
+        -fx-background-radius: 12px;
+        -fx-padding: 8px;
+        -fx-text-fill: #a9b1d6;
+    """;
+
+    private static final String LIGHT_SLIDER_STYLE = """
+        -fx-control-inner-background: #fff;
+        -fx-background-color: #e9ecef;
+        -fx-background-radius: 12px;
+        -fx-padding: 8px;
+    """;
+
+    // Styles des boutons standards
+    private static final String DARK_BUTTON_STYLE = GRADIENT_BUTTON_DARK;
+    private static final String LIGHT_BUTTON_STYLE = GRADIENT_BUTTON_LIGHT;
+
+    // Styles des boutons de logs
+    private static final String LOGS_BUTTON_DARK = """
+        -fx-background-color: linear-gradient(to right, #24283b, #414868);
+        -fx-text-fill: #FFFFFF;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+    """;
+
+    private static final String LOGS_BUTTON_LIGHT = """
+        -fx-background-color: linear-gradient(to right, #e9ecef, #dee2e6);
+        -fx-text-fill: #212529;
+        -fx-font-size: 16px;
+        -fx-font-weight: bold;
+        -fx-padding: 12px 20px;
+        -fx-background-radius: 12px;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+        -fx-min-width: 180px;
+        -fx-pref-width: 180px;
+    """;
 
     private Map<String, ShapeAdapter> shapeAdapters;
     private Observable canvasObservable;
@@ -404,9 +474,9 @@ public class App extends Application {
             FXCollections.observableArrayList("Dijkstra", "A*", "Floyd-Warshall")
         );
         algorithmSelector.setValue("Dijkstra");
-        algorithmSelector.setMinWidth(120);
-        algorithmSelector.setPrefWidth(120);
-        algorithmSelector.setStyle(LIGHT_COMBO_BOX_STYLE);
+        algorithmSelector.setMinWidth(180);
+        algorithmSelector.setPrefWidth(180);
+        algorithmSelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
         
         // Gestionnaire pour le sélecteur d'algorithme
         algorithmSelector.setOnAction(e -> {
@@ -447,32 +517,32 @@ public class App extends Application {
         rotationLabel.setStyle(LIGHT_LABEL_STYLE);
         
         // Initialisation du sélecteur de forme avec une taille réduite
-        ComboBox<String> shapeSelector = new ComboBox<>(
+        shapeSelector = new ComboBox<>(
             FXCollections.observableArrayList("Rectangle", "Cercle", "Ligne", "Triangle", "Étoile", "Graphe")
         );
         shapeSelector.setValue("Rectangle");
-        shapeSelector.setMinWidth(120);
-        shapeSelector.setPrefWidth(120);
-        shapeSelector.setStyle(LIGHT_COMBO_BOX_STYLE);
+        shapeSelector.setMinWidth(180);
+        shapeSelector.setPrefWidth(180);
+        shapeSelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
 
         // Initialisation du sélecteur de couleur avec une taille réduite
-        ColorPicker colorPicker = new ColorPicker(currentColor);
-        colorPicker.setMinWidth(120);
-        colorPicker.setPrefWidth(120);
-        colorPicker.setStyle(LIGHT_COLOR_PICKER_STYLE);
+        colorPicker = new ColorPicker(currentColor);
+        colorPicker.setMinWidth(180);
+        colorPicker.setPrefWidth(180);
+        colorPicker.setStyle(isDarkTheme ? DARK_COLOR_PICKER_STYLE : LIGHT_COLOR_PICKER_STYLE);
 
         // Initialisation des sliders avec une taille réduite
         Slider strokeSizeSlider = createStyledSlider(1, 10, strokeWidth, 1);
-        strokeSizeSlider.setMinWidth(120);
-        strokeSizeSlider.setPrefWidth(120);
+        strokeSizeSlider.setMinWidth(180);
+        strokeSizeSlider.setPrefWidth(180);
         
         Slider shapeSizeSlider = createStyledSlider(50, 400, currentShapeSize, 50);
-        shapeSizeSlider.setMinWidth(120);
-        shapeSizeSlider.setPrefWidth(120);
+        shapeSizeSlider.setMinWidth(180);
+        shapeSizeSlider.setPrefWidth(180);
         
         Slider rotationSlider = createStyledSlider(0, 360, rotationAngle, 45);
-        rotationSlider.setMinWidth(120);
-        rotationSlider.setPrefWidth(120);
+        rotationSlider.setMinWidth(180);
+        rotationSlider.setPrefWidth(180);
 
         // Initialisation de la case à cocher avec une taille réduite
         filledCheckBox = new CheckBox("Remplir");
@@ -509,11 +579,11 @@ public class App extends Application {
         themeBox.setAlignment(Pos.CENTER_RIGHT);
         themeBox.getChildren().add(themeToggle);
 
-        // Création du conteneur principal des contrôles avec largeur réduite
+        // Création du conteneur principal des contrôles avec largeur augmentée
         controls = new VBox(8);
         controls.setStyle(isDarkTheme ? DARK_CONTROL_PANEL_STYLE : LIGHT_CONTROL_PANEL_STYLE);
-        controls.setPadding(new Insets(8));
-        controls.setPrefWidth(180);
+        controls.setPadding(new Insets(12));
+        controls.setPrefWidth(200);
         
         // Ajout des contrôles de forme
         controls.getChildren().addAll(
@@ -539,6 +609,7 @@ public class App extends Application {
         addEdgeButton.setStyle(BLUE_BUTTON_STYLE);
         graphControls = new VBox(8, addEdgeButton, findPathButton, new Label("Algorithme :"), algorithmSelector);
         graphControls.setAlignment(Pos.CENTER);
+        graphControls.setPrefWidth(180);
         graphControls.setVisible(false);
         controls.getChildren().add(graphControls);
         // ---
@@ -547,15 +618,15 @@ public class App extends Application {
         controlButtons = new VBox(12);
         controlButtons.setAlignment(Pos.CENTER);
         controlButtons.setStyle(isDarkTheme ? DARK_TOOLBAR_STYLE : LIGHT_TOOLBAR_STYLE);
-        controlButtons.setPrefWidth(170);
+        controlButtons.setPrefWidth(200);
         for (Button btn : new Button[]{clearButton, undoButton, redoButton, saveButton, loadButton}) {
-            btn.setPrefWidth(150);
+            btn.setPrefWidth(180);
             btn.setStyle((isDarkTheme ? DARK_BUTTON_STYLE : LIGHT_BUTTON_STYLE) + "-fx-background-color: inherit;");
         }
         controlButtons.getChildren().setAll(clearButton, undoButton, redoButton, saveButton, loadButton);
 
         // Organisation principale
-        HBox drawingArea = new HBox(20);
+        HBox drawingArea = new HBox(15);
         drawingArea.setAlignment(Pos.CENTER);
         drawingArea.getChildren().setAll(canvas, controlButtons);
 
@@ -563,11 +634,11 @@ public class App extends Application {
         loggingStrategySelector = new ComboBox<>();
         loggingStrategySelector.getItems().addAll("Console", "Fichier", "Base de données");
         loggingStrategySelector.setValue("Console");
-        loggingStrategySelector.setStyle("-fx-background-color: #fff; -fx-text-fill: #23272a; -fx-font-size: 15px; -fx-border-color: #b9bbbe; -fx-border-width: 2px; -fx-border-radius: 8px;");
-        loggingStrategySelector.setPrefWidth(120);
+        loggingStrategySelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
+        loggingStrategySelector.setPrefWidth(180);
         viewLogsButton = new Button("📋 Voir les logs");
-        viewLogsButton.setStyle(GRAY_BUTTON_STYLE);
-        viewLogsButton.setPrefWidth(120);
+        viewLogsButton.setStyle(isDarkTheme ? LOGS_BUTTON_DARK : LOGS_BUTTON_LIGHT);
+        viewLogsButton.setPrefWidth(180);
         viewLogsButton.setOnAction(e -> {
             String selectedStrategy = loggingStrategySelector.getValue();
             try {
@@ -603,7 +674,8 @@ public class App extends Application {
                 updateStatus("Erreur lors de l'affichage des logs");
             }
         });
-        HBox loggingControls = new HBox(8, loggingStrategySelector, viewLogsButton);
+
+        VBox loggingControls = new VBox(8, loggingStrategySelector, viewLogsButton);
         loggingControls.setAlignment(Pos.CENTER);
         loggingControls.setPadding(new Insets(10, 0, 10, 0));
         loggingControls.setStyle("-fx-background-color: transparent;");
@@ -612,12 +684,12 @@ public class App extends Application {
         VBox mainControls = new VBox(8);
         mainControls.getChildren().setAll(controls);
         mainControls.setStyle(isDarkTheme ? GLASS_SIDEBAR_DARK : GLASS_SIDEBAR_LIGHT);
-        mainControls.setPrefWidth(260);
+        mainControls.setPrefWidth(220);
         VBox.setVgrow(controls, Priority.ALWAYS);
         mainControls.getChildren().add(loggingControls);
         // Ajout du ScrollPane autour du panneau de gauche
         ScrollPane scrollPane = new ScrollPane(mainControls);
-        scrollPane.setPrefWidth(260);
+        scrollPane.setPrefWidth(220);
         scrollPane.setFitToWidth(true);
 
         // Création du HBox root avec padding réduit
@@ -633,13 +705,13 @@ public class App extends Application {
         primaryStage.setMinHeight(700);
 
         // Ajout des gestionnaires d'événements
-        setupEventHandlers(primaryStage, shapeSelector, colorPicker, strokeSizeSlider, shapeSizeSlider, rotationSlider,
+        setupEventHandlers(primaryStage, colorPicker, strokeSizeSlider, shapeSizeSlider, rotationSlider,
                          themeToggle, scene);
 
         primaryStage.show();
     }
 
-    private void setupEventHandlers(Stage primaryStage, ComboBox<String> shapeSelector, ColorPicker colorPicker,
+    private void setupEventHandlers(Stage primaryStage, ColorPicker colorPicker,
                                   Slider strokeSizeSlider, Slider shapeSizeSlider, Slider rotationSlider,
                                   ToggleButton themeToggle, Scene scene) {
         // Gestionnaire pour le sélecteur de forme
@@ -854,7 +926,7 @@ public class App extends Application {
 
     private Slider createStyledSlider(double min, double max, double value, double majorTickUnit) {
         Slider slider = new Slider(min, max, value);
-        slider.setPrefWidth(150);
+        slider.setPrefWidth(180);
         slider.setShowTickLabels(true);
         slider.setShowTickMarks(true);
         slider.setMajorTickUnit(majorTickUnit);
@@ -868,29 +940,25 @@ public class App extends Application {
         Button button = new Button(emoji + " " + text);
         button.setMaxWidth(Double.MAX_VALUE);
         
-        // Couleurs plus vives pour les boutons
-        String darkColor = color;
-        String lightColor = color;
+        String baseStyle = isDarkTheme ? 
+            (color.equals("#27ae60") ? ACCENT_BUTTON_DARK : GRADIENT_BUTTON_DARK) :
+            (color.equals("#27ae60") ? ACCENT_BUTTON_LIGHT : GRADIENT_BUTTON_LIGHT);
+            
+        button.setStyle(baseStyle);
         
-        // Ajuster les couleurs selon le thème
-        switch (color) {
-            case "#27ae60": // Vert
-                darkColor = "#a6e3a1"; // Vert plus clair pour le thème sombre
-                lightColor = "#40a02b"; // Vert plus foncé pour le thème clair
-                break;
-            case "#e74c3c": // Rouge
-                darkColor = "#f38ba8"; // Rouge plus clair pour le thème sombre
-                lightColor = "#d20f39"; // Rouge plus foncé pour le thème clair
-                break;
-            case "#3498db": // Bleu
-                darkColor = "#89b4fa"; // Bleu plus clair pour le thème sombre
-                lightColor = "#1e66f5"; // Bleu plus foncé pour le thème clair
-                break;
-        }
+        // Effet de survol
+        button.setOnMouseEntered(e -> {
+            button.setStyle(baseStyle + """
+                -fx-scale-x: 1.05;
+                -fx-scale-y: 1.05;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0, 0, 4);
+            """);
+        });
         
-        String buttonColor = isDarkTheme ? darkColor : lightColor;
-        button.setStyle((isDarkTheme ? DARK_BUTTON_STYLE : LIGHT_BUTTON_STYLE) + 
-                        "-fx-background-color: " + buttonColor + ";");
+        button.setOnMouseExited(e -> {
+            button.setStyle(baseStyle);
+        });
+        
         return button;
     }
 
@@ -1026,107 +1094,69 @@ public class App extends Application {
     }
 
     private void updateTheme() {
-        // Utiliser les variables existantes
-        String buttonStyle = isDarkTheme ? DARK_BUTTON_STYLE : LIGHT_BUTTON_STYLE;
-        String toolbarStyle = isDarkTheme ? DARK_TOOLBAR_STYLE : LIGHT_TOOLBAR_STYLE;
-        String controlPanelStyle = isDarkTheme ? DARK_CONTROL_PANEL_STYLE : LIGHT_CONTROL_PANEL_STYLE;
-        String rootStyle = isDarkTheme ? DARK_THEME : LIGHT_THEME;
-        String sliderStyle = isDarkTheme ? DARK_SLIDER_STYLE : LIGHT_SLIDER_STYLE;
-        String canvasStyle = isDarkTheme ? DARK_CANVAS_STYLE : LIGHT_CANVAS_STYLE;
+        String buttonStyle = isDarkTheme ? GRADIENT_BUTTON_DARK : GRADIENT_BUTTON_LIGHT;
+        String accentButtonStyle = isDarkTheme ? ACCENT_BUTTON_DARK : ACCENT_BUTTON_LIGHT;
+        String toolbarStyle = isDarkTheme ? GLASS_EFFECT_DARK : GLASS_EFFECT_LIGHT;
+        String controlPanelStyle = isDarkTheme ? GLASS_EFFECT_DARK : GLASS_EFFECT_LIGHT;
+        String rootStyle = isDarkTheme ? 
+            "-fx-background-color: linear-gradient(to bottom right, #1a1b26, #24283b);" :
+            "-fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9ecef);";
 
-        // Mise à jour des styles
         root.setStyle(rootStyle);
         controls.setStyle(controlPanelStyle);
         controlButtons.setStyle(toolbarStyle);
         graphControls.setStyle(controlPanelStyle);
 
-        // Mise à jour des labels avec styles inline
-        String labelStyle = isDarkTheme ? 
-            """
-            -fx-text-fill: #cdd6f4;
-            -fx-font-size: 16px;
-            -fx-font-weight: bold;
-            -fx-padding: 5px 0;
-            """ : 
-            """
-            -fx-text-fill: #4c4f69;
-            -fx-font-size: 16px;
-            -fx-font-weight: bold;
-            -fx-padding: 5px 0;
-            """;
-            
-        shapeLabel.setStyle(isDarkTheme ? MODERN_LABEL_DARK : MODERN_LABEL_LIGHT);
-        colorLabel.setStyle(isDarkTheme ? MODERN_LABEL_DARK : MODERN_LABEL_LIGHT);
-        strokeSizeLabel.setStyle(isDarkTheme ? MODERN_LABEL_DARK : MODERN_LABEL_LIGHT);
-        shapeSizeLabel.setStyle(isDarkTheme ? MODERN_LABEL_DARK : MODERN_LABEL_LIGHT);
-        rotationLabel.setStyle(isDarkTheme ? MODERN_LABEL_DARK : MODERN_LABEL_LIGHT);
-        
-        // Style de statut amélioré
-        statusLabel.setStyle(isDarkTheme ? 
-            """
-            -fx-text-fill: #a6e3a1;
-            -fx-font-size: 14px;
-            -fx-font-weight: bold;
-            -fx-background-color: #313244;
-            -fx-padding: 8px;
-            -fx-background-radius: 5px;
-            """ : 
-            """
-            -fx-text-fill: #40a02b;
-            -fx-font-size: 14px;
-            -fx-font-weight: bold;
-            -fx-background-color: #dce0e8;
-            -fx-padding: 8px;
-            -fx-background-radius: 5px;
-            -fx-border-color: #bcc0cc;
-            -fx-border-width: 1px;
-            -fx-border-radius: 5px;
-            """);
-            
-        modeIndicator.setStyle(labelStyle + "-fx-background-color: " + 
-                              (isGraphMode ? "rgba(166,227,161,0.8)" : "rgba(205,214,244,0.8)") + 
-                              "; -fx-padding: 8px; -fx-background-radius: 8px;");
-
-        // Mise à jour de la case à cocher
-        filledCheckBox.setStyle(isDarkTheme ? 
-            """
-            -fx-text-fill: #cdd6f4;
-            -fx-font-size: 15px;
-            -fx-background-color: transparent;
-            -fx-padding: 5px 0;
-            """ : 
-            """
-            -fx-text-fill: #4c4f69;
-            -fx-font-size: 15px;
-            -fx-background-color: transparent;
-            -fx-padding: 5px 0;
-            """);
+        // Mise à jour des labels
+        shapeLabel.setStyle(isDarkTheme ? DARK_LABEL_STYLE : LIGHT_LABEL_STYLE);
+        colorLabel.setStyle(isDarkTheme ? DARK_LABEL_STYLE : LIGHT_LABEL_STYLE);
+        strokeSizeLabel.setStyle(isDarkTheme ? DARK_LABEL_STYLE : LIGHT_LABEL_STYLE);
+        shapeSizeLabel.setStyle(isDarkTheme ? DARK_LABEL_STYLE : LIGHT_LABEL_STYLE);
+        rotationLabel.setStyle(isDarkTheme ? DARK_LABEL_STYLE : LIGHT_LABEL_STYLE);
 
         // Mise à jour des boutons
-        updateButtonStyles(buttonStyle);
+        drawButton.setStyle(accentButtonStyle);
+        clearButton.setStyle(accentButtonStyle);
+        undoButton.setStyle(buttonStyle);
+        redoButton.setStyle(buttonStyle);
+        saveButton.setStyle(accentButtonStyle);
+        loadButton.setStyle(accentButtonStyle);
+        findPathButton.setStyle(accentButtonStyle);
+        addEdgeButton.setStyle(accentButtonStyle);
+        viewLogsButton.setStyle(isDarkTheme ? LOGS_BUTTON_DARK : LOGS_BUTTON_LIGHT);
 
-        // Mise à jour du canvas
-        canvas.setStyle(canvasStyle);
-        
-        // Mise à jour des ComboBox et ColorPicker
+        // Mise à jour des autres composants
+        canvas.setStyle(isDarkTheme ? DARK_CANVAS_STYLE : LIGHT_CANVAS_STYLE);
         if (loggingStrategySelector != null) {
-            loggingStrategySelector.setStyle(isDarkTheme ? MODERN_COMBOBOX_DARK : MODERN_COMBOBOX_LIGHT);
+            loggingStrategySelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
+            loggingStrategySelector.setStyle(loggingStrategySelector.getStyle() + (isDarkTheme ? "-fx-text-fill: #FFFFFF;" : "-fx-text-fill: #212529;"));
+        }
+        if (shapeSelector != null) {
+            shapeSelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
+            shapeSelector.setStyle(shapeSelector.getStyle() + (isDarkTheme ? "-fx-text-fill: #FFFFFF;" : "-fx-text-fill: #212529;"));
+        }
+        if (algorithmSelector != null) {
+            algorithmSelector.setStyle(isDarkTheme ? DARK_COMBO_BOX_STYLE : LIGHT_COMBO_BOX_STYLE);
+            algorithmSelector.setStyle(algorithmSelector.getStyle() + (isDarkTheme ? "-fx-text-fill: #FFFFFF;" : "-fx-text-fill: #212529;"));
+        }
+        if (colorPicker != null) {
+            colorPicker.setStyle(isDarkTheme ? DARK_COLOR_PICKER_STYLE : LIGHT_COLOR_PICKER_STYLE);
+            colorPicker.setStyle(colorPicker.getStyle() + (isDarkTheme ? "-fx-text-fill: #FFFFFF;" : "-fx-text-fill: #212529;"));
+        }
+        if (filledCheckBox != null) {
+            filledCheckBox.setStyle(isDarkTheme ? DARK_CHECK_BOX_STYLE : LIGHT_CHECK_BOX_STYLE);
+        }
+        if (statusLabel != null) {
+            statusLabel.setStyle(isDarkTheme ? DARK_STATUS_STYLE : LIGHT_STATUS_STYLE);
         }
 
-        canvasObservable.notifyObservers("THEME_CHANGED", isDarkTheme);
-    }
+        // Animation de transition
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), root);
+        fadeTransition.setFromValue(0.8);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.play();
 
-    private void updateButtonStyles(String baseStyle) {
-        // Mise à jour des styles des boutons
-        drawButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
-        clearButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#e74c3c" : "#e74c3c") + ";");
-        undoButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#3498db" : "#3498db") + ";");
-        redoButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#3498db" : "#3498db") + ";");
-        saveButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
-        loadButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
-        findPathButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
-        addEdgeButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
-        viewLogsButton.setStyle(baseStyle + "-fx-background-color: " + (isDarkTheme ? "#27ae60" : "#2ecc71") + ";");
+        canvasObservable.notifyObservers("THEME_CHANGED", isDarkTheme);
     }
 
     private void redrawCanvas() {
@@ -1193,7 +1223,7 @@ public class App extends Application {
             logArea.setText("Erreur lors de la récupération des logs : " + e.getMessage());
         }
 
-        Button closeButton = createStyledButton("Fermer", "#e74c3c", "❌");
+        Button closeButton = createStyledButton("Fermer", "#27ae60", "❌");
         closeButton.setOnAction(e -> logStage.close());
 
         root.getChildren().addAll(logArea, closeButton);
