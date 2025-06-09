@@ -1,4 +1,4 @@
-package masi.s2.adapter;
+package masi.s2.geometryAdapter;
 
 import javafx.scene.canvas.GraphicsContext;
 

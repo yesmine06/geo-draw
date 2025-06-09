@@ -1,4 +1,4 @@
-package masi.s2.adapter;
+package masi.s2.geometryAdapter;
 
 public class ShapeAdapterFactory {
     public static ShapeAdapter createAdapter(String shapeName) {

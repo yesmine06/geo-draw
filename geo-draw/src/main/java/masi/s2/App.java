@@ -35,13 +35,13 @@ import javafx.animation.FadeTransition;
 import javafx.util.Duration;
 import masi.s2.observer.Observer;
 import masi.s2.observer.Observable;
-import masi.s2.adapter.ShapeAdapter;
-import masi.s2.adapter.RectangleAdapter;
-import masi.s2.adapter.CircleAdapter;
-import masi.s2.adapter.LineAdapter;
-import masi.s2.adapter.TriangleAdapter;
-import masi.s2.adapter.StarAdapter;
-import masi.s2.adapter.ShapeAdapterFactory;
+import masi.s2.geometryAdapter.ShapeAdapter;
+import masi.s2.geometryAdapter.RectangleAdapter;
+import masi.s2.geometryAdapter.CircleAdapter;
+import masi.s2.geometryAdapter.LineAdapter;
+import masi.s2.geometryAdapter.TriangleAdapter;
+import masi.s2.geometryAdapter.StarAdapter;
+import masi.s2.geometryAdapter.ShapeAdapterFactory;
 
 /**
  * Hello world!
