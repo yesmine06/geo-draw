@@ -3,94 +3,105 @@ package masi.s2.graph;
 import java.util.*;
 
 public class FloydWarshallStrategy implements ShortestPathStrategy {
-
     @Override
-    public List<Node> findShortestPath(Graph graph, Node start, Node end) {
-        List<Node> nodes = graph.getNodes();
-        if (start == null || end == null || nodes.isEmpty()) {
-            return new ArrayList<>();
+    public List<Node> findShortestPath(Graph graph, Node start, Node end) throws IllegalArgumentException, PathNotFoundException {
+        validateInput(graph, start, end);
+        
+        Map<Node, Map<Node, Double>> distances = new HashMap<>();
+        Map<Node, Map<Node, Node>> next = new HashMap<>();
+        
+        // Initialisation
+        for (Node i : graph.getNodes()) {
+            distances.put(i, new HashMap<>());
+            next.put(i, new HashMap<>());
+            for (Node j : graph.getNodes()) {
+                distances.get(i).put(j, Double.POSITIVE_INFINITY);
+                next.get(i).put(j, null);
+            }
+            distances.get(i).put(i, 0.0);
         }
 
-        // Map nodes to indices for matrix representation
-        Map<Node, Integer> nodeToIndex = new HashMap<>();
-        for (int i = 0; i < nodes.size(); i++) {
-            nodeToIndex.put(nodes.get(i), i);
-        }
-
-        int numNodes = nodes.size();
-        double[][] distances = new double[numNodes][numNodes];
-        Node[][] nextNode = new Node[numNodes][numNodes];
-
-        // Initialize distances and nextNode matrix
-        for (int i = 0; i < numNodes; i++) {
-            for (int j = 0; j < numNodes; j++) {
-                if (i == j) {
-                    distances[i][j] = 0;
-                } else {
-                    distances[i][j] = Double.POSITIVE_INFINITY;
-                }
-                nextNode[i][j] = null;
+        // Remplir les distances initiales
+        for (Node i : graph.getNodes()) {
+            for (Map.Entry<Node, Double> neighbor : i.getNeighbors().entrySet()) {
+                Node j = neighbor.getKey();
+                double weight = neighbor.getValue();
+                distances.get(i).put(j, weight);
+                next.get(i).put(j, j);
             }
         }
 
-        // Fill initial distances based on direct edges
-        for (Node node : nodes) {
-            int u = nodeToIndex.get(node);
-            for (Map.Entry<Node, Double> neighborEntry : node.getNeighbors().entrySet()) {
-                Node neighbor = neighborEntry.getKey();
-                double weight = neighborEntry.getValue();
-                int v = nodeToIndex.get(neighbor);
-                distances[u][v] = weight;
-                nextNode[u][v] = neighbor;
-            }
-        }
-
-        // Apply Floyd-Warshall algorithm
-        for (int k = 0; k < numNodes; k++) {
-            for (int i = 0; i < numNodes; i++) {
-                for (int j = 0; j < numNodes; j++) {
-                    if (distances[i][k] != Double.POSITIVE_INFINITY && distances[k][j] != Double.POSITIVE_INFINITY) {
-                        if (distances[i][k] + distances[k][j] < distances[i][j]) {
-                            distances[i][j] = distances[i][k] + distances[k][j];
-                            nextNode[i][j] = nextNode[i][k];
-                        }
+        // Algorithme Floyd-Warshall
+        for (Node k : graph.getNodes()) {
+            for (Node i : graph.getNodes()) {
+                for (Node j : graph.getNodes()) {
+                    double ik = distances.get(i).get(k);
+                    double kj = distances.get(k).get(j);
+                    double ij = distances.get(i).get(j);
+                    
+                    if (ik != Double.POSITIVE_INFINITY && 
+                        kj != Double.POSITIVE_INFINITY && 
+                        ik + kj < ij) {
+                        distances.get(i).put(j, ik + kj);
+                        next.get(i).put(j, next.get(i).get(k));
                     }
                 }
             }
         }
 
-        // Check for negative cycles
-        for (int i = 0; i < numNodes; i++) {
-            if (distances[i][i] < 0) {
-                // Negative cycle detected
-                System.out.println("Floyd-Warshall: Negative cycle detected. Shortest path is undefined.");
-                return new ArrayList<>();
-            }
+        // Vérifier si un chemin existe
+        if (distances.get(start).get(end) == Double.POSITIVE_INFINITY) {
+            throw new PathNotFoundException("Aucun chemin trouvé entre " + start.getId() + " et " + end.getId());
         }
 
-        int startIndex = nodeToIndex.get(start);
-        int endIndex = nodeToIndex.get(end);
+        // Reconstruire le chemin
+        return reconstructPath(next, start, end);
+    }
 
-        if (distances[startIndex][endIndex] == Double.POSITIVE_INFINITY) {
-            return new ArrayList<>(); // No path exists
+    private void validateInput(Graph graph, Node start, Node end) throws IllegalArgumentException {
+        if (graph == null) {
+            throw new IllegalArgumentException("Le graphe ne peut pas être null");
         }
+        if (start == null) {
+            throw new IllegalArgumentException("Le nœud de départ ne peut pas être null");
+        }
+        if (end == null) {
+            throw new IllegalArgumentException("Le nœud d'arrivée ne peut pas être null");
+        }
+        if (!graph.getNodes().contains(start)) {
+            throw new IllegalArgumentException("Le nœud de départ n'appartient pas au graphe");
+        }
+        if (!graph.getNodes().contains(end)) {
+            throw new IllegalArgumentException("Le nœud d'arrivée n'appartient pas au graphe");
+        }
+    }
 
-        // Reconstruct path
+    private List<Node> reconstructPath(Map<Node, Map<Node, Node>> next, Node start, Node end) {
         List<Node> path = new ArrayList<>();
-        path.add(start);
-        Node current = start;
-
-        while (current != null && !current.equals(end)) {
-            int u = nodeToIndex.get(current);
-            Node next = nextNode[u][endIndex];
-            if (next == null) {
-                // Should not happen if a path exists, but as a safeguard
-                return new ArrayList<>();
-            }
-            path.add(next);
-            current = next;
+        if (next.get(start).get(end) == null) {
+            return path;
         }
 
+        path.add(start);
+        while (start != end) {
+            start = next.get(start).get(end);
+            path.add(start);
+        }
         return path;
+    }
+
+    @Override
+    public boolean canHandle(Graph graph) {
+        return graph != null && !graph.getNodes().isEmpty();
+    }
+
+    @Override
+    public String getName() {
+        return "Floyd-Warshall";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Algorithme Floyd-Warshall - Trouve les chemins les plus courts entre toutes les paires de nœuds";
     }
 } 

@@ -42,6 +42,10 @@ import masi.s2.geometryAdapter.LineAdapter;
 import masi.s2.geometryAdapter.TriangleAdapter;
 import masi.s2.geometryAdapter.StarAdapter;
 import masi.s2.geometryAdapter.ShapeAdapterFactory;
+import masi.s2.observer.CanvasObservable;
+import masi.s2.observer.CanvasEvent;
+import masi.s2.observer.StatusBarObserver;
+import masi.s2.observer.LoggingObserver;
 
 /**
  * Hello world!
@@ -413,7 +417,7 @@ public class App extends Application {
     """;
 
     private Map<String, ShapeAdapter> shapeAdapters;
-    private Observable canvasObservable;
+    private CanvasObservable canvasObservable;
 
     @Override
     public void start(Stage primaryStage) {
@@ -424,27 +428,10 @@ public class App extends Application {
         shapeAdapters.put("Ligne", new LineAdapter());
         shapeAdapters.put("Triangle", new TriangleAdapter());
         shapeAdapters.put("Étoile", new StarAdapter());
-        // Ajouter d'autres adaptateurs ici...
 
         // Initialisation de l'observable
-        canvasObservable = new Observable();
-        canvasObservable.addObserver(new Observer() {
-            @Override
-            public void update(String event, Object data) {
-                switch (event) {
-                    case "DRAW":
-                        updateStatus("Forme dessinée");
-                        break;
-                    case "CLEAR":
-                        updateStatus("Canvas effacé");
-                        break;
-                    case "THEME_CHANGED":
-                        updateStatus("Thème " + (isDarkTheme ? "sombre" : "clair") + " activé");
-                        break;
-                }
-            }
-        });
-
+        canvasObservable = new CanvasObservable();
+        
         // Initialisation des composants de base
         canvas = new Canvas(900, 600);
         gc = canvas.getGraphicsContext2D();
@@ -455,6 +442,10 @@ public class App extends Application {
         // Initialisation du système de journalisation
         loggingManager = LoggingManager.getInstance(new ConsoleLoggingStrategy());
         actionLogger = new ActionLogger();
+
+        // Ajout des observateurs
+        canvasObservable.addObserver(new StatusBarObserver(statusLabel, isDarkTheme));
+        canvasObservable.addObserver(new LoggingObserver(loggingManager));
 
         // Initialisation du graphe
         graph = new Graph();
@@ -867,29 +858,7 @@ public class App extends Application {
                     } else if (selectedNode2 == null && clicked != selectedNode1) {
                         selectedNode2 = clicked;
                         // Calculer le chemin
-                        List<Node> path = pathStrategy.findShortestPath(graph, selectedNode1, selectedNode2);
-                        if (path.isEmpty()) {
-                            updateStatus("Aucun chemin trouvé entre " + selectedNode1.getId() + " et " + selectedNode2.getId());
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Aucun chemin trouvé");
-                            alert.setHeaderText("Impossible de trouver un chemin");
-                            alert.setContentText("Il n'existe pas de chemin entre le nœud " + selectedNode1.getId() + " et le nœud " + selectedNode2.getId());
-                            alert.showAndWait();
-                        } else {
-                            double pathLength = calculatePathLength(path);
-                            graph.setShortestPath(path);
-                            String chemin = path.stream().map(Node::getId).reduce((a,b)->a+"→"+b).orElse("");
-                            updateStatus("Chemin : " + chemin + " (longueur : " + String.format("%.2f", pathLength) + ")");
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Chemin le plus court");
-                            alert.setHeaderText("Chemin trouvé entre " + selectedNode1.getId() + " et " + selectedNode2.getId());
-                            alert.setContentText("Chemin : " + chemin + "\nLongueur totale : " + String.format("%.2f", pathLength));
-                            alert.showAndWait();
-                        }
-                        selectedNode1 = null;
-                        selectedNode2 = null;
-                        graphAction = GraphAction.NONE;
-                        redrawCanvas();
+                        findShortestPath();
                     }
                 } else {
                     // Ajout de nœud
@@ -1084,7 +1053,7 @@ public class App extends Application {
         ShapeAdapter adapter = ShapeAdapterFactory.createAdapter(currentShape);
         if (adapter != null) {
             adapter.draw(gc, startX, startY, endX, endY, isFilled);
-            canvasObservable.notifyObservers("DRAW", null);
+            canvasObservable.notifyObservers(new CanvasEvent(CanvasEvent.EventType.DRAW, null));
         }
 
         // Restaurer l'état du contexte graphique
@@ -1094,6 +1063,7 @@ public class App extends Application {
     }
 
     private void updateTheme() {
+        isDarkTheme = !isDarkTheme;
         String buttonStyle = isDarkTheme ? GRADIENT_BUTTON_DARK : GRADIENT_BUTTON_LIGHT;
         String accentButtonStyle = isDarkTheme ? ACCENT_BUTTON_DARK : ACCENT_BUTTON_LIGHT;
         String toolbarStyle = isDarkTheme ? GLASS_EFFECT_DARK : GLASS_EFFECT_LIGHT;
@@ -1156,7 +1126,7 @@ public class App extends Application {
         fadeTransition.setToValue(1.0);
         fadeTransition.play();
 
-        canvasObservable.notifyObservers("THEME_CHANGED", isDarkTheme);
+        canvasObservable.notifyObservers(new CanvasEvent(CanvasEvent.EventType.THEME_CHANGED, isDarkTheme));
     }
 
     private void redrawCanvas() {
@@ -1349,7 +1319,7 @@ public class App extends Application {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(currentColor);
-        canvasObservable.notifyObservers("CLEAR", null);
+        canvasObservable.notifyObservers(new CanvasEvent(CanvasEvent.EventType.CLEAR, null));
 
         // Réinitialiser le graphe et les variables associées
         graph = new Graph();
@@ -1360,5 +1330,50 @@ public class App extends Application {
         if (isGraphMode) {
             updateStatus("Graphe réinitialisé.");
         }
+    }
+
+    private void findShortestPath() {
+        if (selectedNode1 == null || selectedNode2 == null) {
+            showAlert("Erreur", "Veuillez sélectionner un nœud de départ et d'arrivée");
+            return;
+        }
+
+        try {
+            List<Node> path = pathStrategy.findShortestPath(graph, selectedNode1, selectedNode2);
+            if (path.isEmpty()) {
+                updateStatus("Aucun chemin trouvé entre " + selectedNode1.getId() + " et " + selectedNode2.getId());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Aucun chemin trouvé");
+                alert.setHeaderText("Impossible de trouver un chemin");
+                alert.setContentText("Il n'existe pas de chemin entre le nœud " + selectedNode1.getId() + " et le nœud " + selectedNode2.getId());
+                alert.showAndWait();
+            } else {
+                double pathLength = calculatePathLength(path);
+                graph.setShortestPath(path);
+                String chemin = path.stream().map(Node::getId).reduce((a,b)->a+"→"+b).orElse("");
+                updateStatus("Chemin : " + chemin + " (longueur : " + String.format("%.2f", pathLength) + ")");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Chemin le plus court");
+                alert.setHeaderText("Chemin trouvé entre " + selectedNode1.getId() + " et " + selectedNode2.getId());
+                alert.setContentText("Chemin : " + chemin + "\nLongueur totale : " + String.format("%.2f", pathLength));
+                alert.showAndWait();
+            }
+            selectedNode1 = null;
+            selectedNode2 = null;
+            graphAction = GraphAction.NONE;
+            redrawCanvas();
+        } catch (PathNotFoundException e) {
+            showAlert("Erreur", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            showAlert("Erreur", e.getMessage());
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

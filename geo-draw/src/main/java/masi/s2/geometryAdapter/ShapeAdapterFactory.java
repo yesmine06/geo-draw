@@ -1,21 +1,26 @@
 package masi.s2.geometryAdapter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ShapeAdapterFactory {
+    private static final Map<String, ShapeAdapter> adapters = new HashMap<>();
+    
+    static {
+        // Enregistrement des adaptateurs par défaut
+        registerAdapter("Rectangle", new RectangleAdapter());
+        registerAdapter("Cercle", new CircleAdapter());
+        registerAdapter("Ligne", new LineAdapter());
+        registerAdapter("Triangle", new TriangleAdapter());
+        registerAdapter("Étoile", new StarAdapter());
+        registerAdapter("Etoile", new StarAdapter());
+    }
+    
+    public static void registerAdapter(String shapeName, ShapeAdapter adapter) {
+        adapters.put(shapeName, adapter);
+    }
+    
     public static ShapeAdapter createAdapter(String shapeName) {
-        switch (shapeName) {
-            case "Rectangle":
-                return new RectangleAdapter();
-            case "Cercle":
-                return new CircleAdapter();
-            case "Ligne":
-                return new LineAdapter();
-            case "Triangle":
-                return new TriangleAdapter();
-            case "Étoile":
-            case "Etoile":
-                return new StarAdapter();
-            default:
-                return null;
-        }
+        return adapters.get(shapeName);
     }
 } 
